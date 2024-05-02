@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Poppins";
+  src: url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  html,
+  body {
+    @apply antialiased bg-brand-light text-brand-muted font-body;
+  }
+  p {
+    @apply mb-5;
+  }
+  p:last-of-type {
+    @apply mb-0;
+  }
+  p > strong {
+    @apply font-semibold;
+  }
+  p > a {
+    @apply transition text-brand;
+  }
+  p > a:hover {
+    @apply text-brand-dark;
+  }
+  .h-inherit {
+    height: inherit;
+  }
+  .order-list-enable ol {
+    list-style: decimal;
+    @apply ltr:pl-4 rtl:pr-4 lg:ltr:pl-8 lg:rtl:pr-8 space-y-1.5;
+  }
+  button:focus {
+    outline: 0px solid !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .after-item-opacity:after {
+    @apply absolute top-0 h-full ltr:right-0 rtl:left-0;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 1)
+    );
+    content: "";
+    z-index: 5;
+  }
+}
+
+/* for header one */
+.header-one .headerMenu .menuItem > a::before {
+  bottom: -22px;
+}
+.headerMenu .menuItem:hover > .subMenu {
+  visibility: visible;
+  top: calc(100% + 2px);
+}
+.header-one .headerMenu .menuItem:hover > .subMenu {
+  top: calc(100% + 10px);
+}
+
+/* Breadcrumb truncate last child */
+.header-two.sticky-header.is-scrolling .navbar-logo {
+  @apply -mt-1;
+}
