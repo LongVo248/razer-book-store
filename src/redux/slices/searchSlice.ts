@@ -21,8 +21,7 @@ const initialState: Search = {
 export const search = createAsyncThunk(
   "books/search",
   async (params: SearchParam) => {
-    const response = await API.book.search(params);
-    return response;
+    return await API.book.search(params);
   }
 );
 
@@ -39,11 +38,8 @@ const searchSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(search.fulfilled, (state, action) => {
-      console.log("====================================");
-      console.log(action);
-      console.log("====================================");
       state.isLoading = true;
-      const selectedBook: Book[] = action.payload.data.docs.map((doc: Doc) => {
+      state.searchBookList = action.payload.data.docs.map((doc: Doc) => {
         return {
           title: doc.title,
           image: API.API_PATH.BOOK.COVER + doc.cover_i + ".jpg",
@@ -52,7 +48,6 @@ const searchSlice = createSlice({
           id: doc.key,
         };
       });
-      state.searchBookList = selectedBook;
       state.totalPage = Math.round(action.payload.data.numFound / 12);
     });
     builder.addCase(search.rejected, (state) => {

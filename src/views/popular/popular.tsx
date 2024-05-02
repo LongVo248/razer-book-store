@@ -37,8 +37,8 @@ export default function Popular() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const urlGenre = urlParams.get("genres") || "love";
-    const urlPage = parseInt(urlParams.get("page") || "1");
+    const urlGenre = urlParams.get("genres") ?? "love";
+    const urlPage = parseInt(urlParams.get("page") ?? "1");
     setGenre(urlGenre);
     setCurrentPage(urlPage);
   }, []);
@@ -75,14 +75,16 @@ export default function Popular() {
             {/* <div>Search Top Bar</div> */}
             <div>
               <BookGrid data={bookList} loading={loading} />
-              <div className="flex justify-center mt-10">
-                <Pagination
-                  current={currentPage}
-                  onChange={onChange}
-                  total={totalPage}
-                  showSizeChanger={false}
-                />
-              </div>
+              {loading && (
+                <div className="flex justify-center mt-10">
+                  <Pagination
+                    current={currentPage}
+                    onChange={onChange}
+                    total={totalPage}
+                    showSizeChanger={false}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
