@@ -21,9 +21,6 @@ export default function BookDetail() {
     if (author) {
       setAuthor(author);
     }
-    console.log("====================================");
-    console.log(author);
-    console.log("====================================");
 
     if (bookWorkId) {
       dispatch(detail(`/works/${bookWorkId}`));

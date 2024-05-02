@@ -1,7 +1,7 @@
 import API from "@/libs/api";
 import { Book } from "@/types/book.type";
 import { Work } from "@/types/work.type";
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { SearchBookByGenres } from "@/types/search.param";
 
@@ -20,8 +20,7 @@ const initialState: BookState = {
 export const popular = createAsyncThunk(
   "books/popular",
   async (params: SearchBookByGenres) => {
-    const response = await API.book.popular(params);
-    return response;
+    return await API.book.popular(params);
   }
 );
 
@@ -41,7 +40,6 @@ const bookSlice = createSlice({
     builder
       .addCase(popular.fulfilled, (state, action) => {
         state.isLoadingPopular = true;
-        console.log("====================================");
         const selectedBook: Book[] = action.payload.data.works.map(
           (work: Work) => {
             return {
@@ -54,18 +52,13 @@ const bookSlice = createSlice({
           }
         );
         state.totalPage = Math.round(action.payload.data.work_count / 12);
-        console.log(selectedBook);
         state.popularList = selectedBook;
-        console.log("====================================");
       })
       .addCase(popular.pending, (state) => {
         state.isLoadingPopular = false;
       })
       .addCase(popular.rejected, (state) => {
         state.isLoadingPopular = false;
-      })
-      .addDefaultCase((state, action) => {
-        console.log(`action type: ${action.type}`, current(state));
       });
   },
 });

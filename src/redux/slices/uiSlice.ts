@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface UIState {
   displayMobileSearch: boolean;
   displaySearch: boolean;
+  displayFilter: boolean;
 }
 
 const initialState: UIState = {
   displayMobileSearch: false,
   displaySearch: false,
+  displayFilter: false,
 };
 
 const uiSlice = createSlice({
@@ -29,6 +31,15 @@ const uiSlice = createSlice({
     closeSearch: (state) => {
       state.displaySearch = false;
     },
+    openFilter: (state) => {
+      state.displayFilter = true;
+    },
+    closeFilter: (state) => {
+      state.displayFilter = false;
+    },
+    displayFilter: (state) => {
+      state.displayFilter = !state.displayFilter;
+    },
   },
 });
 
@@ -38,6 +49,9 @@ export const {
   openMobileSearch,
   openSearch,
   closeSearch,
+  openFilter,
+  closeFilter,
+  displayFilter,
 } = uiSlice.actions;
 
 const uiReducer = uiSlice.reducer;

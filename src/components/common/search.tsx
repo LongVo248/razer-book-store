@@ -2,7 +2,7 @@ import { search, setSearchText } from "@/redux/slices/searchSlice";
 import { closeMobileSearch, closeSearch } from "@/redux/slices/uiSlice";
 import { RootState, useAppDispatch } from "@/redux/store";
 import cn from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SearchBox from "./search-box";
@@ -27,7 +27,8 @@ const Search = React.forwardRef<HTMLDivElement, Props>(
     );
     const [searchInput, setSearchInput] = useState("");
     const [inputFocus, setInputFocus] = useState<boolean>(false);
-
+    const searchParams = new URLSearchParams(window.location.search);
+    const query = searchParams.has("q") ? searchParams.get("q") : null;
     const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ const Search = React.forwardRef<HTMLDivElement, Props>(
       dispatch(setSearchText(searchInput));
       dispatch(search({ q: searchInput, limit: 12, page: 1 }));
       navigate(`/search/?q=${searchInput}&page=${1}`);
+      setSearchInput(searchInput);
     }
     function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
       setSearchInput(e.currentTarget.value);
@@ -53,6 +55,13 @@ const Search = React.forwardRef<HTMLDivElement, Props>(
       setInputFocus(true);
     }
 
+    useEffect(() => {
+      if (query) {
+        setSearchInput(query);
+        setInputFocus(true);
+      }
+    }, [query]);
+
     return (
       <div
         ref={ref}
@@ -66,7 +75,7 @@ const Search = React.forwardRef<HTMLDivElement, Props>(
             "overlay cursor-pointer invisible w-full h-full opacity-0 flex top-0 ltr:left-0 rtl:right-0 transition-all duration-300 fixed",
             {
               open: displayMobileSearch,
-              "input-focus-overlay-open": inputFocus === true,
+              "input-focus-overlay-open": inputFocus,
               "open-search-overlay": displaySearch,
             }
           )}
